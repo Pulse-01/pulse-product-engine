@@ -1,0 +1,337 @@
+<!-- =========================================================
+     PULSE:01 PRODUCT PAGE ENGINE
+     Version: 1.0 Stable + Documented
+     Date documented: July 2026
+
+     STATUS
+     - Known-good working baseline
+     - Center Stone dropdown generated from Variant Pricing Data
+     - No functional logic intentionally changed in this documented copy
+
+     IMPORTANT
+     Keep the original uploaded file as the untouched recovery version.
+     Make future feature changes in a new versioned copy.
+
+     FILE MAP
+     1. CSS
+        - Gallery image transition
+        - Cost debug table
+        - Config dropdown system
+        - Center Stone template hiding
+     2. JavaScript
+        - Global helpers
+        - Product gallery
+        - Metal image switching
+        - Purity logic
+        - Attachment/length logic
+        - Global pricing loader
+        - Pricing and configuration engines
+        - Dynamic Center Stone options
+        - Debug panel
+        - Product-type visibility
+        - Dropdown and option-button engines
+        - Quantity, favorites, and add-to-cart controls
+        - Initialization
+========================================================= -->
+
+.hero-product-image {
+  transition: opacity 500ms ease;
+}
+
+.hero-product-image.is-fading {
+  opacity: 0;
+}
+
+/* =========================
+   COST DEBUG TABLE
+========================= */
+
+.cost-debug-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.cost-debug-table th,
+.cost-debug-table td {
+  border-bottom: 1px solid rgba(0,0,0,0.12);
+  padding: 6px 8px;
+  text-align: left;
+}
+
+.cost-debug-table th {
+  font-weight: 600;
+}
+
+.cost-debug-table .debug-section td {
+  padding-top: 12px;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.cost-debug-table .debug-total td {
+  font-weight: 700;
+}
+
+/* =========================
+   CONFIG DROPDOWN
+========================= */
+.product-configurator,
+.product-info-wrap,
+.product-info-column,
+.config-group,
+.config-attachment,
+.config-length,
+.config-dropdown {
+  overflow: visible !important;
+}
+.config-attachment {
+  position: relative;
+  z-index: 100;
+}
+
+.config-length {
+  position: relative;
+  z-index: 10;
+}
+
+.dropdown-suppressed {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* 
+   STABILITY NOTE:
+   The following config-dropdown declarations overlap with later declarations.
+   They are intentionally retained in Version 1.0 because the current cascade
+   is verified working. Review only in a separate future refactor.
+*/
+.config-dropdown {
+  position: relative;
+  z-index: 1;
+}
+
+.config-dropdown.is-open {
+  z-index: 100;
+}
+
+.config-dropdown {
+  position: relative;
+  z-index: 1;
+  overflow: visible !important;
+}
+
+.config-dropdown.is-open {
+  z-index: 10000;
+}
+
+.config-dropdown-menu {
+  display: block !important;
+  position: absolute !important;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10001 !important;
+  background-color: #FCFAF7;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(6px);
+
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease,
+    visibility 0ms linear 220ms;
+}
+.config-dropdown-menu {
+  height: auto !important;
+  min-height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.config-dropdown-menu .config-dropdown-item {
+  position: relative !important;
+  display: block !important;
+  visibility: visible !important;
+  height: auto !important;
+}
+
+
+  
+.config-dropdown.is-open .config-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease,
+    visibility 0ms linear 0ms;
+}
+
+.config-dropdown-toggle {
+  background-color: transparent;
+  border-color: #DCD1C7;
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease;
+}
+
+.config-dropdown-toggle:hover {
+  background-color: rgba(168,141,90,0.04);
+  border-color: #DCD1C7;
+}
+
+.config-dropdown.is-open .config-dropdown-toggle,
+.config-dropdown.has-selection .config-dropdown-toggle {
+  background-color: rgba(168,141,90,0.08);
+  border-color: #A88D5A;
+}
+
+.config-dropdown-icon {
+  color: #A88D5A;
+  transform-origin: center center;
+  transition: transform 220ms ease;
+}
+
+.config-dropdown.is-open .config-dropdown-icon {
+  transform: rotate(180deg);
+}
+
+.config-dropdown-item {
+  cursor: pointer;
+  background-color: transparent;
+  transition:
+    background-color 220ms ease,
+    color 220ms ease;
+}
+
+.config-dropdown-menu
+.config-dropdown-item[data-center-stone-template="true"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+
+.config-dropdown-menu
+.config-dropdown-item[data-finish-template="true"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+} 
+
+.config-dropdown-menu
+.config-dropdown-item[data-accent-stone-template="true"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+
+.config-dropdown-menu
+.config-dropdown-item[data-texture-template="true"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+
+.config-dropdown-menu
+.config-dropdown-item[data-birthstone-template="true"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+
+.config-dropdown-menu
+.config-dropdown-item[data-chain-style-template="true"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}  
+
+.config-dropdown-menu
+.config-dropdown-item[data-bead-size-template="true"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}  
+
+
+  
+.config-dropdown-menu
+.config-dropdown-item[data-clasp-style-template="true"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+  
+.config-dropdown-item:hover {
+  background-color: rgba(168,141,90,0.04);
+}
+
+.config-dropdown-item.is-selected {
+  background-color: rgba(168,141,90,0.08);
+}
+
+.config-dropdown-title {
+  color: #36302A;
+  transition: color 220ms ease;
+}
+
+.config-dropdown-item.is-selected .config-dropdown-title {
+  color: #A88D5A;
+}
+
+.config-dropdown.is-single-option .config-dropdown-toggle {
+  cursor: default;
+}
+
+.config-dropdown.is-single-option .config-dropdown-toggle:hover {
+  background-color: rgba(168,141,90,0.08);
+  border-color: #A88D5A;
+}
+  
+
