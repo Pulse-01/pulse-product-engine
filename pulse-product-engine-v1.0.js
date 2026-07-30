@@ -1,39 +1,3 @@
-/* =========================================================
-     PULSE:01 PRODUCT PAGE ENGINE
-     Version: 1.0 Stable + Documented
-     Date documented: July 2026
-
-     STATUS
-     - Known-good working baseline
-     - Center Stone dropdown generated from Variant Pricing Data
-     - No functional logic intentionally changed in this documented copy
-
-     IMPORTANT
-     Keep the original uploaded file as the untouched recovery version.
-     Make future feature changes in a new versioned copy.
-
-     FILE MAP
-     1. CSS
-        - Gallery image transition
-        - Cost debug table
-        - Config dropdown system
-        - Center Stone template hiding
-     2. JavaScript
-        - Global helpers
-        - Product gallery
-        - Metal image switching
-        - Purity logic
-        - Attachment/length logic
-        - Global pricing loader
-        - Pricing and configuration engines
-        - Dynamic Center Stone options
-        - Debug panel
-        - Product-type visibility
-        - Dropdown and option-button engines
-        - Quantity, favorites, and add-to-cart controls
-        - Initialization
-========================================================= */ 
-
 document.addEventListener("DOMContentLoaded", function () {
   "use strict";
 
