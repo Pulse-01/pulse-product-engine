@@ -1,4 +1,4 @@
-<!-- =========================================================
+/* =========================================================
      PULSE:01 PRODUCT PAGE ENGINE
      Version: 1.0 Stable + Documented
      Date documented: July 2026
@@ -32,7 +32,7 @@
         - Dropdown and option-button engines
         - Quantity, favorites, and add-to-cart controls
         - Initialization
-========================================================= -->
+========================================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
   "use strict";
