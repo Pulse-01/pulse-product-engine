@@ -331,6 +331,8 @@ document.addEventListener("DOMContentLoaded", function () {
    ATTACHMENT / LENGTH LOGIC
 ========================= */
 
+let pendantLengthInitialized = false;
+
 function updateSizeVisibility(attachment) {
   const lengthGroup = getGroup("length");
 
@@ -352,34 +354,44 @@ function updateSizeVisibility(attachment) {
    */
   applyConfigurationDependencies();
 
-  if (!includesChain) {
+  if (!includesChain || !lengthGroup) {
     return;
   }
 
   /*
-   * Preserve a previously selected length.
-   * Default to 16 inches only the first time.
+   * Default a pendant with chain to 18 inches the first time.
+   * After that, preserve the shopper's own length selection,
+   * including 16 inches.
    */
-  const selectedLength =
-    getSelectedValue(lengthGroup);
-
-  if (!selectedLength) {
-    const defaultLength =
-      selectOptionByValue(
-        lengthGroup,
-        "16"
+  if (!pendantLengthInitialized) {
+    const defaultLengthButton =
+      lengthGroup.querySelector(
+        '[data-option-button="18"]'
       );
 
-    if (!defaultLength) {
+    if (defaultLengthButton) {
+      selectButton(
+        lengthGroup,
+        defaultLengthButton
+      );
+
+      updateDropdownDisplay(
+        lengthGroup,
+        defaultLengthButton
+      );
+    } else {
       initializeVisibleDropdownGroup(
         lengthGroup
       );
     }
-  } else {
-    initializeVisibleDropdownGroup(
-      lengthGroup
-    );
+
+    pendantLengthInitialized = true;
+    return;
   }
+
+  initializeVisibleDropdownGroup(
+    lengthGroup
+  );
 }
   /* =========================
      GLOBAL PRICING
@@ -1781,28 +1793,53 @@ const optionGroups = document.querySelectorAll("[data-option-group]");
 
   /*
    * Initialize Attachment only when it applies.
+   * Dropdown menu items are visually hidden while closed,
+   * so select the default directly instead of relying on
+   * visible-button detection.
    */
   if (attachmentGroup && isVisible(attachmentGroup)) {
-    let selectedAttachment = getSelectedValue(attachmentGroup);
+    let selectedAttachment =
+      getSelectedValue(attachmentGroup);
 
-    if (!selectedAttachment) {
-      selectedAttachment =
-        selectFirstVisibleButton(attachmentGroup);
-    }
+    let selectedButton = selectedAttachment
+      ? attachmentGroup.querySelector(
+          '[data-option-button="' +
+          selectedAttachment +
+          '"]'
+        )
+      : null;
 
-    if (selectedAttachment) {
-      const selectedButton = attachmentGroup.querySelector(
-        '[data-option-button="' + selectedAttachment + '"]'
-      );
+    if (!selectedButton) {
+      selectedButton =
+        attachmentGroup.querySelector(
+          '[data-option-button="pendant-only"]'
+        ) ||
+        attachmentGroup.querySelector(
+          "[data-option-button]"
+        );
 
       if (selectedButton) {
-        updateDropdownDisplay(
+        selectButton(
           attachmentGroup,
           selectedButton
         );
-      }
 
-      updateSizeVisibility(selectedAttachment);
+        selectedAttachment =
+          selectedButton.getAttribute(
+            "data-option-button"
+          );
+      }
+    }
+
+    if (selectedButton && selectedAttachment) {
+      updateDropdownDisplay(
+        attachmentGroup,
+        selectedButton
+      );
+
+      updateSizeVisibility(
+        selectedAttachment
+      );
     }
   }
 
