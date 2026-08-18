@@ -74,6 +74,14 @@
   font-weight: 700;
 }
 
+/*
+ * Diagnostic markup is preserved in Webflow for future testing,
+ * but hidden from the customer-facing product page.
+ */
+.cost-debug-panel {
+  display: none !important;
+}
+
 /* =========================
    CONFIG DROPDOWN
 ========================= */

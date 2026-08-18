@@ -237,12 +237,22 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   }
 
+  let activePurityMetal = null;
+  const lastPurityByMetal = {};
+
   function updatePurityForMetal(metal) {
     const purityGroup = getGroup("purity");
     if (!purityGroup) return;
 
+    const currentPurity = getSelectedValue(purityGroup);
+
+    if (activePurityMetal && currentPurity) {
+      lastPurityByMetal[activePurityMetal] = currentPurity;
+    }
+
     if (metal === "silver" || metal === "sterling-silver") {
       purityGroup.classList.add("option-group-hidden");
+      activePurityMetal = metal;
       return;
     }
 
@@ -263,9 +273,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-   const visiblePurityItems = purityItems.filter((item) => {
-  return !item.classList.contains("option-group-hidden");
-});
+    const visiblePurityItems = purityItems.filter((item) => {
+      return !item.classList.contains("option-group-hidden");
+    });
+
     const dropdown = purityGroup.querySelector("[data-config-dropdown='true']");
     const toggle = dropdown?.querySelector(
       "[data-config-dropdown-toggle='true']"
@@ -276,19 +287,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!visiblePurityItems.length) {
       purityGroup.classList.add("option-group-hidden");
+      activePurityMetal = metal;
       return;
     }
 
-    let selectedItem = visiblePurityItems.find((item) =>
-      item.classList.contains("is-selected")
-    );
+    const rememberedPurity = lastPurityByMetal[metal];
+
+    let selectedItem = visiblePurityItems.find((item) => {
+      return item.getAttribute("data-purity-wrap") === rememberedPurity;
+    });
+
+    if (!selectedItem) {
+      selectedItem = visiblePurityItems.find((item) =>
+        item.classList.contains("is-selected")
+      );
+    }
 
     if (!selectedItem) {
       selectedItem = visiblePurityItems[0];
-      selectButton(purityGroup, selectedItem);
     }
 
+    selectButton(purityGroup, selectedItem);
     updateDropdownDisplay(purityGroup, selectedItem);
+
+    lastPurityByMetal[metal] =
+      selectedItem.getAttribute("data-purity-wrap");
+    activePurityMetal = metal;
 
     const hasMultipleChoices = visiblePurityItems.length > 1;
 
