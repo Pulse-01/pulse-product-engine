@@ -24,7 +24,7 @@
     },
     derive: {
       length: function (ctx) {
-        return ctx.attachment === "with-chain" ? ctx.getSelection("length") : "pendant";
+        return ctx.values.attachment === "with-chain" ? ctx.getSelection("length") : "pendant";
       }
     },
     variants: {
@@ -40,7 +40,6 @@
       "yellow-gold|18k|with-chain|22|clear-quartz": ["56034790834468", "DRIFT-YG18-CH22-CQ"],
       "yellow-gold|18k|with-chain|24|none": ["56034790867236", "DRIFT-YG18-CH24-NONE"],
       "yellow-gold|18k|with-chain|24|clear-quartz": ["56034790900004", "DRIFT-YG18-CH24-CQ"],
-
       "yellow-gold|22k|pendant-only|pendant|none": ["56034729296164", "DRIFT-YG22-PEND-NONE"],
       "yellow-gold|22k|pendant-only|pendant|clear-quartz": ["56034791391524", "DRIFT-YG22-PEND-CQ"],
       "yellow-gold|22k|with-chain|16|none": ["56034791424292", "DRIFT-YG22-CH16-NONE"],
@@ -53,7 +52,6 @@
       "yellow-gold|22k|with-chain|22|clear-quartz": ["56034791653668", "DRIFT-YG22-CH22-CQ"],
       "yellow-gold|22k|with-chain|24|none": ["56034791686436", "DRIFT-YG22-CH24-NONE"],
       "yellow-gold|22k|with-chain|24|clear-quartz": ["56034791719204", "DRIFT-YG22-CH24-CQ"],
-
       "yellow-gold|24k|pendant-only|pendant|none": ["56034792374564", "DRIFT-YG24-PEND-NONE"],
       "yellow-gold|24k|pendant-only|pendant|clear-quartz": ["56034792407332", "DRIFT-YG24-PEND-CQ"],
       "yellow-gold|24k|with-chain|16|none": ["56034792440100", "DRIFT-YG24-CH16-NONE"],
@@ -66,7 +64,6 @@
       "yellow-gold|24k|with-chain|22|clear-quartz": ["56034792669476", "DRIFT-YG24-CH22-CQ"],
       "yellow-gold|24k|with-chain|24|none": ["56034792702244", "DRIFT-YG24-CH24-NONE"],
       "yellow-gold|24k|with-chain|24|clear-quartz": ["56034792735012", "DRIFT-YG24-CH24-CQ"],
-
       "white-gold|18k|pendant-only|pendant|none": ["56034793160996", "DRIFT-WG18-PEND-NONE"],
       "white-gold|18k|pendant-only|pendant|clear-quartz": ["56034793193764", "DRIFT-WG18-PEND-CQ"],
       "white-gold|18k|with-chain|16|none": ["56034793226532", "DRIFT-WG18-CH16-NONE"],
@@ -79,7 +76,6 @@
       "white-gold|18k|with-chain|22|clear-quartz": ["56034793455908", "DRIFT-WG18-CH22-CQ"],
       "white-gold|18k|with-chain|24|none": ["56034793488676", "DRIFT-WG18-CH24-NONE"],
       "white-gold|18k|with-chain|24|clear-quartz": ["56034793521444", "DRIFT-WG18-CH24-CQ"],
-
       "rose-gold|18k|pendant-only|pendant|none": ["56034794176804", "DRIFT-RG18-PEND-NONE"],
       "rose-gold|18k|pendant-only|pendant|clear-quartz": ["56034794209572", "DRIFT-RG18-PEND-CQ"],
       "rose-gold|18k|with-chain|16|none": ["56034794242340", "DRIFT-RG18-CH16-NONE"],
