@@ -3,7 +3,8 @@
   var META_KEY='p01:favorite-meta:v1';
   function metalHero(){
     var group=document.querySelector('[data-option-group="metal"]');
-    var metal=group&&(group.getAttribute('data-selected')||(group.querySelector('.is-selected')&&group.querySelector('.is-selected').getAttribute('data-option-button')));
+    var selected=group&&group.querySelector('.is-selected');
+    var metal=group&&(group.getAttribute('data-selected')||(selected&&selected.getAttribute('data-option-button')));
     var img=metal&&document.querySelector('[data-metal-image="'+metal+'-hero"]');
     var main=document.querySelector('[data-main-image="true"]');
     return (img&&(img.currentSrc||img.src))||(main&&(main.currentSrc||main.src))||'';
@@ -26,11 +27,19 @@
       return '<a href="'+path+'" style="display:grid;grid-template-columns:92px 1fr;gap:18px;align-items:center;padding:20px 0;border-bottom:1px solid #e2dbd2;color:#36302a;text-decoration:none">'+image+'<span style="font:24px Playfair Display,serif">'+name+'</span></a>';
     }).join('');
   }
+
+  /* Runs at WINDOW capture, before the mini-cart's DOCUMENT capture listener. */
+  window.addEventListener('click',function(e){
+    if(!e.target.closest('.add-to-cart-button')) return;
+    var main=document.querySelector('[data-main-image="true"]'), hero=metalHero();
+    if(!main||!hero) return;
+    var old=main.src, oldset=main.getAttribute('srcset');
+    main.src=hero;
+    main.removeAttribute('srcset');
+    setTimeout(function(){main.src=old;if(oldset)main.setAttribute('srcset',oldset);},120);
+  },true);
+
   document.addEventListener('click',function(e){
-    if(e.target.closest('.add-to-cart-button')){
-      var main=document.querySelector('[data-main-image="true"]'), hero=metalHero();
-      if(main&&hero){var old=main.src, oldset=main.getAttribute('srcset'); main.src=hero; main.removeAttribute('srcset'); setTimeout(function(){main.src=old;if(oldset)main.setAttribute('srcset',oldset);},120);}
-    }
     if(e.target.closest('.favorite-button')) setTimeout(syncFavoriteMeta,60);
     if(e.target.closest('.heart-icon')) setTimeout(enhanceFavorites,80);
   },true);
