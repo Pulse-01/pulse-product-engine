@@ -91,6 +91,7 @@
       .cc-review.is-success{background:#edf7ef;color:#205d2d}
       [data-cc-preview-button]{display:flex!important;align-items:center;justify-content:center;color:#1d1d1b!important;background:#fff!important;text-decoration:none!important;font-size:11px!important;letter-spacing:.08em!important;text-transform:uppercase!important}
       [data-cc-preview-button]:hover,[data-cc-preview-button]:focus{color:#1d1d1b!important;border-color:#a88d5a!important}
+      [data-cc-sync-button]{display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important}
       @media(max-width:767px){.cc-settings-grid,.cc-fields{grid-template-columns:1fr}.cc-key-wrap{margin-left:0;width:100%}}
     `;
     document.head.appendChild(style);
