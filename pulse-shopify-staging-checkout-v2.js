@@ -62,8 +62,9 @@
         return;
       }
       if (key === "purity") labels.push(String(value).toUpperCase());
-      else if (key === "length" && /^\\d+$/.test(String(value))) labels.push(value + " in");
-      else labels.push(pretty(value));
+      else if (key === "length") {
+        if (/^\\d+$/.test(String(value))) labels.push(value + " in");
+      } else labels.push(pretty(value));
     });
     return labels.join(" · ");
   }
