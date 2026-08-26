@@ -1,6 +1,6 @@
 /* =========================================================
-   PULSE:01 VERIFIED STAGING MINI CART
-   - Runs only on the Webflow staging hostname
+   PULSE:01 VERIFIED STOREFRONT MINI CART
+   - Runs on published storefront domains, not the Designer canvas
    - Preserves the reusable Shopify variant bridge
    - Stores configured variants locally
    - Opens an on-brand cart drawer before Shopify checkout
@@ -8,11 +8,13 @@
 (function () {
   "use strict";
 
-  const ALLOWED_HOST = "pulse-01.webflow.io";
   const SHOPIFY_DOMAIN = "pulse-01.myshopify.com";
   const STORAGE_KEY = "p01:cart:v1";
 
-  if (window.location.hostname !== ALLOWED_HOST) return;
+  const IS_DESIGNER = /\\.design\\.webflow\\.com$/.test(window.location.hostname) ||
+    Boolean(window.Webflow && typeof window.Webflow.env === "function" && window.Webflow.env("design"));
+
+  if (IS_DESIGNER) return;
 
   function money(value) {
     const n = Number(value) || 0;
